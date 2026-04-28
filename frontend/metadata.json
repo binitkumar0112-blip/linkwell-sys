@@ -1,0 +1,9 @@
+{
+  "name": "Linkwell",
+  "description": "Community coordination platform for NGOs, volunteers, and donors.",
+  "requestFramePermissions": [
+    "microphone",
+    "camera"
+  ],
+  "majorCapabilities": []
+}

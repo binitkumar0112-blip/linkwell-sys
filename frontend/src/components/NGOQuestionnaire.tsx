@@ -59,6 +59,30 @@ export default function NGOQuestionnaire({ userId, onComplete, onCancel }: NGOQu
     try {
       console.log('[NGOQuestionnaire] Saving NGO application for userId:', userId);
 
+      // Ensure user exists in users table before creating NGO
+      const { data: existingUser } = await supabase
+        .from('users')
+        .select('id')
+        .eq('id', userId)
+        .maybeSingle();
+
+      if (!existingUser) {
+        console.log('[NGOQuestionnaire] User not found, creating user record...');
+        const { error: userError } = await supabase
+          .from('users')
+          .insert([{
+            id: userId,
+            email: '',  // Will be filled by auth
+            name: '',   // Can be updated later
+            role: 'ngo_admin'
+          }]);
+        
+        if (userError) {
+          console.error('[NGOQuestionnaire] Failed to create user:', userError);
+          throw new Error('Failed to create user record: ' + userError.message);
+        }
+      }
+
       const ngoData = {
         name: name.trim(),
         category: category.toLowerCase() || 'general',

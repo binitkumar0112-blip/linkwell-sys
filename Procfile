@@ -1,1 +1,1 @@
-web: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --http h11
+web: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --http h11 --workers 1

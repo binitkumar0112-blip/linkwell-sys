@@ -59,10 +59,10 @@ export default function NGOQuestionnaire({ userId, onComplete, onCancel }: NGOQu
     try {
       console.log('[NGOQuestionnaire] Saving NGO application for userId:', userId);
 
-      // Ensure user exists in users table before creating NGO
+      // Step 1: Ensure user exists (with role='citizen' first, no NGO required yet)
       const { data: existingUser } = await supabase
         .from('users')
-        .select('id')
+        .select('id, email, name')
         .eq('id', userId)
         .maybeSingle();
 
@@ -72,9 +72,9 @@ export default function NGOQuestionnaire({ userId, onComplete, onCancel }: NGOQu
           .from('users')
           .insert([{
             id: userId,
-            email: '',  // Will be filled by auth
-            name: '',   // Can be updated later
-            role: 'ngo_admin'
+            email: 'temp@example.com',  // Temporary, will be updated by auth sync
+            name: 'NGO Admin',           // Temporary, will be updated by auth sync
+            role: 'citizen'              // Start as citizen to avoid constraint
           }]);
         
         if (userError) {
@@ -83,6 +83,7 @@ export default function NGOQuestionnaire({ userId, onComplete, onCancel }: NGOQu
         }
       }
 
+      // Step 2: Create or update the NGO
       const ngoData = {
         name: name.trim(),
         category: category.toLowerCase() || 'general',
@@ -113,16 +114,16 @@ export default function NGOQuestionnaire({ userId, onComplete, onCancel }: NGOQu
         
       if (ngoError) throw ngoError;
 
-      // Update users table to link to this NGO and set role
-      const { error: userError } = await supabase
+      // Step 3: Update user to ngo_admin role with assigned_ngo_id
+      const { error: updateUserError } = await supabase
         .from('users')
-        .update({ 
-           assigned_ngo_id: savedNgo.id,
-           role: 'ngo_admin' 
+        .update({
+          role: 'ngo_admin',
+          assigned_ngo_id: savedNgo.id
         })
         .eq('id', userId);
-        
-      if (userError) throw userError;
+      
+      if (updateUserError) throw updateUserError;
 
       // Update user_profiles
       const { data: existingProfile } = await supabase

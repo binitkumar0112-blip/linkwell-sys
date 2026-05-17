@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ── Typography ─────────────────────────────────── */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Inter", sans-serif;
+
+  /* ── Brand / Primary (Indigo) ──────────────────── */
+  --color-brand-50:  #EEF2FF;
+  --color-brand-100: #E0E7FF;
+  --color-brand-200: #C7D2FE;
+  --color-brand-300: #A5B4FC;
+  --color-brand-400: #818CF8;
+  --color-brand-500: #6366F1;
+  --color-brand-600: #4F46E5;
+  --color-brand-700: #4338CA;
+  --color-brand-800: #3730A3;
+  --color-brand-900: #312E81;
+
+  /* ── Semantic Aliases ───────────────────────────── */
+  --color-primary:   #4F46E5;
+  --color-primary-dark: #4338CA;
+
+  /* ── Status Colors ──────────────────────────────── */
+  --color-status-green:  #22C55E;
+  --color-status-amber:  #F59E0B;
+  --color-status-red:    #EF4444;
+  --color-status-blue:   #3B82F6;
+  --color-status-purple: #A855F7;
+
+  /* ── Surface / Background ───────────────────────── */
+  --color-surface-main: #FFFFFF;
+  --color-surface-alt:  #F8FAFC;
+  --color-surface-card: #FFFFFF;
+
+  /* ── Text ───────────────────────────────────────── */
+  --color-text-main:  #0F172A;
+  --color-text-muted: #64748B;
+  --color-text-faint: #94A3B8;
+
+  /* ── Border ─────────────────────────────────────── */
+  --color-border-main: #E2E8F0;
+  --color-border-focus: #4F46E5;
+
+  /* ── Accent (kept for badge compat) ─────────────── */
+  --color-accent: #4F46E5;
+}
+
+/* ── Base ───────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-surface-alt);
+    color: var(--color-text-main);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Focus ring for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-brand-500);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ── Utility classes ────────────────────────────────── */
+@layer utilities {
+  /* Card system */
+  .card {
+    background: var(--color-surface-main);
+    border: 1px solid var(--color-border-main);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.07);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .card:hover {
+    box-shadow: 0 4px 16px 0 rgb(0 0 0 / 0.10), 0 2px 4px -1px rgb(0 0 0 / 0.06);
+    transform: translateY(-1px);
+  }
+
+  /* Indigo gradient text */
+  .gradient-text {
+    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Glass effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  /* Shimmer skeleton */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      #F1F5F9 25%,
+      #E2E8F0 50%,
+      #F1F5F9 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+    border-radius: 0.5rem;
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Priority left borders */
+  .border-priority-critical { border-left: 4px solid #EF4444; }
+  .border-priority-high     { border-left: 4px solid #F97316; }
+  .border-priority-medium   { border-left: 4px solid #F59E0B; }
+  .border-priority-low      { border-left: 4px solid #22C55E; }
+
+  /* Floating action button */
+  .fab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #4F46E5;
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    box-shadow: 0 8px 24px rgb(79 70 229 / 0.40);
+    transition: all 0.2s ease;
+  }
+
+  .fab:hover {
+    background: #4338CA;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgb(79 70 229 / 0.50);
+  }
+}

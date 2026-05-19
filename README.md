@@ -132,6 +132,9 @@ linkwell/
 │   │   ├── CheckStatus.tsx         # Issue status lookup
 │   │   ├── NgoDashboard.tsx        # NGO workspace
 │   │   ├── NgoRegister.tsx         # NGO signup
+│   │   ├── NgoRejected.tsx         # NGO rejection notice screen
+│   │   ├── NGOPendingReview.tsx    # Awaiting admin review state
+│   │   ├── PendingVerification.tsx # Post-signup verification gate
 │   │   ├── NGOResourceDashboard.tsx # Inventory management
 │   │   ├── NGOVerifications.tsx    # Proof review page
 │   │   ├── NGOList.tsx             # Public NGO directory
@@ -175,7 +178,6 @@ linkwell/
 ├── vite.config.ts
 ├── tsconfig.json
 └── package.json
-```
 
 ---
 

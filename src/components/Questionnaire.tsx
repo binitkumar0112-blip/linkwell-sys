@@ -196,25 +196,17 @@ export default function Questionnaire({ userId, onComplete }: QuestionnaireProps
     setLoading(true);
     try {
       // ensure public.users row exists — may be missing if auth sync timed out
-      const { data: existingUser } = await supabase
-        .from('users')
-        .select('id')
-        .eq('id', userId)
-        .maybeSingle();
-
-      if (!existingUser) {
-        const { data: { user: authUser } } = await supabase.auth.getUser();
-        if (authUser) {
-          const { error: userInsertError } = await supabase.from('users').insert([{
-            id: authUser.id,
-            email: authUser.email,
-            name: authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || 'User',
-            role: 'volunteer',
-          }]);
-          if (userInsertError) {
-            console.error('[Questionnaire] Failed to create missing users row:', userInsertError);
-            throw new Error('Could not initialize your account. Please try logging out and back in.');
-          }
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) {
+        const { error: userUpsertError } = await supabase.from('users').upsert([{
+          id: authUser.id,
+          email: authUser.email,
+          name: authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || 'User',
+          role: 'volunteer',
+        }], { onConflict: 'id' });
+        if (userUpsertError) {
+          console.error('[Questionnaire] Failed to ensure users row:', userUpsertError);
+          throw new Error('Could not initialize your account: ' + userUpsertError.message);
         }
       }
 

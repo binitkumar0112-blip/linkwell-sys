@@ -391,3 +391,8 @@ This project is released under the **MIT License**. See [LICENSE](LICENSE) for d
 - **Google Gemini** — AI urgency assessment and OCR
 - **OpenStreetMap / Leaflet** — Maps
 - **Lucide** — Icon set
+
+## Contributors
+- Binit Kumar Gond
+- Rudraksh Chorge
+- Nikhil Dhuria
